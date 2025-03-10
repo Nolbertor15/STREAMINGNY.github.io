@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pago</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: black;
+            overflow-y: auto; /* Allow vertical scrolling */
+            overflow-x: hidden; /* Disable horizontal scrolling */
+            position: relative;
+        }
+        /* Efecto de desenfoque en el fondo */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(1px); /* Efecto de desenfoque */
+            background: rgba(0, 0, 0, 0.7); /* Aumentada la opacidad del fondo */
+            z-index: 5;
+        }
+        .payment-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto; /* Adjusted margin to create space above */
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 16px rgba(255, 255, 255, 0.863); /* Sombra para destacar la imagen */
+        }
+        .payment-container h1 {
+            margin-bottom: 15px;
+        }
+        .payment-container img {
+            max-width: 200px;
+            height: auto;
+            margin: 20px 0;
+        }
+        .payment-container input {
+            width: 100%;
+            padding: 15px; /* Aumentado para centrar el texto */
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        }
+        
+        .payment-container button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            
+            
+        }
+        .payment-container button:hover {
+            background: #218838;
+            transform: scale(1.03); /* Efecto de aumento al pasar el ratón */
+            
+        }
+        .floating-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1; /* Adjusted z-index to be lower than the carousel */
+        }
+        .icon {
+            position: absolute;
+            width: 90px; /* Mantener tamaño fijo */
+            height: 90px; /* Mantener tamaño fijo */
+            opacity: 0.5;
+            animation: floatIcons linear infinite;
+        }
+        @keyframes floatIcons {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0.2;}
+            50% { transform: translateY(-50vh) translateX(10px); opacity: 1; } /* Movimiento intermedio */
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0.2; }
+        }
+        /* Estilos para el carrusel */
+        .carousel {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Centra las imágenes verticalmente */
+            position: relative;
+            max-width: 668px;
+            height: 350px; /* Ajusta esta altura según el tamaño de tus imágenes */
+            margin: 20px auto;
+            z-index: 10;
+            overflow: cover; /* Evita que las imágenes sobresalgan */
+
+        
+        }
+        .carousel img {
+            width: auto; /* Ajusta el ancho al contenedor */
+            max-height: 100%; /* Ajusta la altura máxima */
+            object-fit: contain; /* Asegura que la imagen cubra el área sin recortes */
+            border-radius: 10px;
+            margin: 0 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Añadir transición suave */
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* Sombra para destacar la imagen */
+        }
+        .carousel img:hover {
+            transform: scale(1.05); /* Efecto de aumento al pasar el ratón */
+            box-shadow: 0 0 16px rgb(255, 255, 255); /* Aumentar sombra al pasar el ratón */
+        }
+
+        .carousel-title {
+            font-size: 28px; /* Increased font size for better visibility */
+            font-weight: bold; /* Make the text bold */
+            color: rgba(255, 255, 255, 1); /* Ensure the title is fully opaque */
+            margin: 10px 0; /* Adjust margin for spacing */
+            text-align: center; /* Center the title */
+            padding: 5px 10px; /* Added padding for better appearance */
+            border-radius: 5px; /* Rounded corners */
+            z-index: 15; /* Ensure title is above carousel images */
+            margin-bottom: 20px; /* Space between title and carousel */
+            position: relative; /* Ensure it is positioned correctly */
+            text-shadow: 0 0 24px rgb(255, 255, 255); /* Added shadow for better visibility */
+            animation: scaleAnimation 1s infinite; /* Apply the animation */
+        }
+
+        @keyframes scaleAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 150px; /* Set a fixed vertical position */
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            z-index: 30; /* Ensure buttons are above images */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+            box-shadow: 0 0 24px rgb(255, 255, 255); /* Aumentar sombra al pasar el ratón */
+        }
+        .carousel-button.left {
+            left: 10px; /* Set spacing to the left */
+        }
+
+        .carousel-button.right {
+            right: 10px; /* Set spacing to the right */
+        }
+
+        .carousel-button:hover {
+            background-color: rgba(255, 255, 255, 1); /* Change background on hover */
+            transform: scale(1.1); /* Slightly enlarge button on hover */
+            box-shadow: 0 0 24px rgba(255, 255, 255, 0.9); /* Aumentar sombra al pasar el ratón */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="overlay"></div> <!-- Agregar la capa de desenfoque -->
+    <div class="floating-icons" id="floatingIcons"></div>
+    <div class="payment-container">
+        <h1>Confirmar Pago</h1>
+        <form id="paymentForm">
+            <label for="phoneNumber">Número de Teléfono:</label>
+            <input type="text" id="phoneNumber" placeholder="Ej. 912345678" required>
+            <input type="hidden" id="productName" value="">
+            <input type="hidden" id="productPrice" value="">
+            <input type="hidden" id="productRenewal" value="">
+            <input type="hidden" id="productStock" value="">
+            <button type="button" onclick="confirmPayment()">Confirmar Pago</button>
+        </form>
+        <img src="images/qr-yape.png" alt="QR de Yape">
+    </div>
+    
+    <!-- Carrusel de imágenes -->
+    <div class="carousel">
+        <img id="carouselImage1" src="images/imagen1.png" alt="Imagen del carrusel">
+        <img id="carouselImage2" src="images/imagen2.png" alt="Imagen del carrusel">
+        <img id="carouselImage3" src="images/imagen3.png" alt="Imagen del carrusel">
+
+        <button class="carousel-button left" onclick="prevImage()" style="left: 0;">&#10094;</button>
+        <button class="carousel-button right" onclick="nextImage()" style="right: 0;">&#10095;</button>
+    </div>
+
+    <div class="carousel-title">¡REFERENCIAS!!</div> <!-- Moved title back here -->
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const nombre = urlParams.get('nombre') || "Producto";
+        const precio = urlParams.get('precio') || "0.00";
+        const renovacion = urlParams.get('renovacion') || "No aplica";
+        const stock = urlParams.get('stock') || "Disponible";
+
+        document.getElementById('productName').value = nombre;
+        document.getElementById('productPrice').value = precio;
+        document.getElementById('productRenewal').value = renovacion;
+        document.getElementById('productStock').value = stock;
+
+        function confirmPayment() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (!/^\d{9}$/.test(phoneNumber)) {
+                alert("Por favor, ingrese un número de teléfono válido de 9 dígitos.");
+                return;
+            }
+            const message = `*Hola, he realizado el pago para:*
+            *Plataforma:* ${nombre}
+            *Precio:* S/. ${precio}
+            *Mi número es:* ${phoneNumber}
+            *Nombre para el perfil:*
+            *ADJUNTO COMBPROBANTE DE PAGO*`;
+            window.location.href = `https://wa.me/51950441700?text=${encodeURIComponent(message)}`;
+        };
+
+        // Agregar iconos flotantes
+        const images = [
+            "disney.png", "netflix.png", "max.png", "prime.png", "paramount.png", "appletv.png",
+            "netflix.png", "prime.png", "disney.png", "max.png", "paramount.png", "appletv.png",
+            "disney.png", "netflix.png", "max.png", "prime.png", "paramount.png", "appletv.png", 
+            "crunchyroll.png", "youtube.png", "youtubemusic.png", "spotify.png", "applemusic.png", 
+            "deezer.png", "directv.png", "movistarplay.png", "wintv.png", "scribd.png", "chatgpt.png", 
+            "camva.png", "duolingo.png"
+        ];
+        const container = document.getElementById("floatingIcons");
+        
+        function createFloatingIcons() {
+            for (let i = 0; i < 1000; i++) { // Mantener 30 iconos
+                setTimeout(() => {
+                    let img = document.createElement("img");
+                    img.src = `images/${images[Math.floor(Math.random() * images.length)]}`;
+                    img.className = "icon";
+                    img.style.left = Math.random() * 100 + "vw";
+                    img.style.animationDuration = (Math.random() * 4 + 2) + "s"; // Rango de 2 a 6 segundos
+                    container.appendChild(img);
+                }, i * 7); // Retraso de 100 ms entre cada icono
+            }
+        }
+        createFloatingIcons(); // Iniciar la creación de iconos al cargar la página
+        // Deshabilitar el menú contextual
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); // Deshabilitar el menú contextual
+        });
+
+        // Deshabilitar las teclas de función
+        document.onkeydown = function(e) {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I") || (e.ctrlKey && e.key === "U")) {
+                e.preventDefault(); // Deshabilitar F12 y combinaciones de teclas
+            }
+        };
+
+        // Carrusel de imágenes
+        let currentIndex = 0;
+        const carouselImages = ["images/imagen1.png", "images/imagen2.png", "images/imagen3.png",
+         "images/imagen4.png", "images/imagen5.png", "images/imagen6.png", "images/imagen7.png", "images/imagen8.png",
+          "images/imagen9.png", "images/imagen10.png","images/imagen11.png", "images/imagen12.png", "images/imagen13.png",
+           "images/imagen14.png", "images/imagen15.png", "images/imagen16.png"];
+        
+        function updateCarousel() {
+            const carouselImage1 = document.getElementById("carouselImage1");
+            const carouselImage2 = document.getElementById("carouselImage2");
+            const carouselImage3 = document.getElementById("carouselImage3");
+            carouselImage1.src = carouselImages[(currentIndex) % carouselImages.length];
+            carouselImage2.src = carouselImages[(currentIndex + 1) % carouselImages.length];
+            carouselImage3.src = carouselImages[(currentIndex + 2) % carouselImages.length];
+            carouselImage1.style.opacity = 1; // Ensure the image is fully opaque
+            carouselImage2.style.opacity = 1; // Ensure the image is fully opaque
+            carouselImage3.style.opacity = 1; // Ensure the image is fully opaque
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 3) % carouselImages.length; // Move by 3 images
+            updateCarousel();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 3 + carouselImages.length) % carouselImages.length; // Move by 3 images
+            updateCarousel();
+        }
+    </script>
+</body>
+</html>

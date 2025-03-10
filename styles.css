@@ -1,0 +1,160 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+header {
+    padding: 20px;
+}
+
+#search {
+    width: 80%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.filter {
+    margin: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 200px;
+    min-height: 350px; /* Asegura altura uniforme */
+    text-align: center;
+}
+
+
+.product-card img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+.product-title {
+    min-height: 40px; /* Asegura que los títulos ocupen el mismo espacio */
+}
+
+.price {
+    min-height: 20px; /* Asegura que el precio siempre tenga la misma posición */
+    color: green;
+    font-weight: bold;
+}
+.renewal {
+    min-height: 20px; /* Espacio uniforme para "Renovación" */
+}
+
+.stock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 5px 15px; /* Espaciado interno */
+    font-weight: bold;
+    border-radius: 20px; /* Bordes redondeados */
+    text-align: center;
+    font-size: 14px;
+    margin: 10px auto 0; /* Centrar y agregar espacio superior */
+}
+.stock.available {
+    background-color: #EAFBF1; /* Verde claro */
+    color: #28a745; /* Verde fuerte */
+}
+.stock.out {
+    background-color: #FCE8E6; /* Rojo claro */
+    color: #D9534F; /* Rojo fuerte */
+}
+#modal {
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: none;
+    z-index: 1000;
+    overflow-y: auto; /* Habilita desplazamiento si es necesario */
+    width: auto; /* Cambiar a auto para que se ajuste al contenido */
+    height: auto; /* Cambiar a auto para que se ajuste al contenido */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+}
+
+.close {
+    position: absolute; /* Asegura que esté en la esquina */
+    top: 10px; /* Ajusta la posición vertical */
+    right: 10px; /* Ajusta la posición horizontal */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la "X" */
+    font-size: 20px; /* Aumenta el tamaño de la "X" para mejor visibilidad */
+}
+#modal ul {
+    padding-left: 0; /* Evita que se desplace mucho a la derecha */
+    margin-top: 5px;
+    list-style-type: none; /* Quita el estilo de viñetas predeterminado */
+}
+
+#modal ul li {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center; /* Asegura alineación con el check */
+}
+
+.checkmark {
+    color: green;
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.buy-button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    
+}
+#modal {
+    cursor: default; /* Asegura que el cursor no cambie al pasar sobre el modal */
+}
+
+.close {
+    cursor: pointer; /* Cambia el cursor al pasar sobre la "X" */
+}
+.whatsapp-button {
+    position: fixed;
+    bottom: 10px;
+    left: 10px; /* Ajustado para el lado izquierdo */
+    z-index: 1000;
+    width: auto; /* Ajusta según el tamaño del icono */
+    height: auto;
+    background: none; /* Elimina el fondo verde */
+    border-radius: 50%;
+    box-shadow: none; /* Quita la sombra si no es necesaria */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.whatsapp-button img {
+    width: 70px; /* Aumenta el tamaño del icono */
+    height: 70px;
+}
+
+.whatsapp-button:hover {
+    transform: scale(1.1);
+    
+}
